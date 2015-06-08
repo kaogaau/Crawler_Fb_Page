@@ -1,8 +1,8 @@
 MONGODB_HOST = '127.0.0.1'
 MONGODB_PORT = 27017
-MONGODB_DBNAME = 'fb_crawler'
-MONGODB_USER_NAME = 'tachen'
-MONGODB_USER_PWD = 'iscae100'
+MONGODB_DBNAME = 'test_kaogaau'
+MONGODB_USER_NAME = 'admin'
+MONGODB_USER_PWD = '12345'
 
 TABLE_PAGES = 'pages' # primary key: page_id
 TABLE_POSTS = 'posts' # primary key: post_id
