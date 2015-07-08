@@ -8,10 +8,6 @@ class FbPageCrawler
       http = Net::HTTP.new @@fb_graph_host, '443'
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE     
-      File.open('./test.txt','a+') do |output|
-      output.puts query
-      puts "OK"
-      end
 	  #puts "URI.escape(query)= " <<URI.escape(query)
       req = Net::HTTP::Get.new(URI.escape(query)) # FIXME: URI.escape cause a obsolete warning
       res = http.request req
