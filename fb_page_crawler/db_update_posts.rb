@@ -55,9 +55,9 @@ class FbPageCrawler
 	  #puts new_post.has_key?('comments')
 	  #puts new_post.has_key?('likes')
       # update comments  
-      db_update_post_comments(post['_id']) if new_post.has_key?('comments')
+      #db_update_post_comments(post['_id']) if new_post.has_key?('comments')
       # update likes
-      db_update_post_likes(post['_id']) if new_post.has_key?('likes')
+      #db_update_post_likes(post['_id']) if new_post.has_key?('likes')
       # update the post
       coll.update({'_id' => post['_id']}, 
                   {'$set' => {'last_updated' => time_update, 'doc' => new_post}})

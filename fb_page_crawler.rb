@@ -52,8 +52,6 @@ require './fb_page_crawler/fb_is_numberid'
 
 require './fb_page_crawler/mongo_set_config'
 require './fb_page_crawler/db_add_page'
-require './fb_page_crawler/db_read_page'
-require './fb_page_crawler/db_read_pages'
 require './fb_page_crawler/db_add_new_posts'
 require './fb_page_crawler/db_add_old_posts'
 require './fb_page_crawler/db_obtain_pages'

@@ -36,9 +36,9 @@ class FbPageCrawler
       #@@logger.debug "db_add_old_posts: post_id=#{post['id']} response:#{res.inspect}"
 
       # update comments
-      db_update_post_comments(post['id'])
+      #db_update_post_comments(post['id'])
       # update likes
-      db_update_post_likes(post['id'])
+      #db_update_post_likes(post['id'])
     }
     $stderr.puts "db_add_old_posts: receive #{page_posts.size} records from page #{page_id}" if page_posts.size > 0
 

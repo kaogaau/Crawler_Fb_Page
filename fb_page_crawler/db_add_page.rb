@@ -40,9 +40,9 @@ class FbPageCrawler
       #coll.insert(post_data)
       db_insert_data(coll, post_data)
       # update comments
-      db_update_post_comments(post['id'])
+      #db_update_post_comments(post['id'])
       # update likes
-      db_update_post_likes(post['id'])
+      #db_update_post_likes(post['id'])
     }
 
   rescue => ex
