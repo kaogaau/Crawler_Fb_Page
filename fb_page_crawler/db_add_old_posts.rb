@@ -6,7 +6,7 @@ class FbPageCrawler
     raise 'page_id can not be empty' if page_id.nil? || page_id.empty?
     time_update = Time.now
     # Retrieve new posts from the target page
-    page_posts = fb_get_old_posts(page_id, oldest_time, {:limit => 20}.merge(opts))
+    page_posts = fb_get_old_posts(page_id, oldest_time, {:limit => 300}.merge(opts))
     oldest_post_time = page_posts.empty? ? oldest_time : Time.parse(page_posts.last.fetch('created_time'))
     oldest_post_time = oldest_time if oldest_time < oldest_post_time
 
@@ -21,6 +21,8 @@ class FbPageCrawler
     # REVIEW: the posts will be lost if page_update fails
     coll = @mongo_db[TABLE_POSTS]
     page_posts.each { |post|
+      post['likes'].delete("paging")
+      post['comments'].delete("paging")
       post_data = {'_id' => post['id'],
                    'page_id' => page_id,
                    'post_time' => Time.parse(post['created_time']),

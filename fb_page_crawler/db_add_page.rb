@@ -1,20 +1,19 @@
 class FbPageCrawler
   # Add a new page into databse via page_name or page_id
-  def db_add_page(page_id)
+  def db_add_page(page_id,page_name)
     raise 'page_id can not be empty' if page_id.nil? || page_id.empty?
     time_update = Time.now
-    page_data = fb_get_post(page_id)
+    page_data = fb_get_page(page_id)
     raise 'No available data retrieved' unless page_data.has_key?('id')
     # Check if the page is in database
     coll = @mongo_db[TABLE_PAGES]
     raise "Page \"#{page_id}\" has been in the database" unless coll.find('_id' => page_data['id']).first.nil?
-
     # Retrieve some posts from the target page
     page_posts = fb_get_posts(page_id, :until => time_update.to_i, :limit => 3)
     latest_post_time = page_posts.empty? ? time_update : Time.parse(page_posts.first.fetch('created_time'))
     oldest_post_time = page_posts.empty? ? time_update : Time.parse(page_posts.last.fetch('created_time'))
 
-    $stderr.puts "db_add_page: adding page \"#{page_id}\" into the database"
+    $stderr.puts "db_add_page: adding page \"#{page_name}\" : \"#{page_id}\" into the database"
     page_data = {'_id' => page_data['id'],
                  'latest_post_time' => latest_post_time,
                  'oldest_post_time' => oldest_post_time,
@@ -30,6 +29,8 @@ class FbPageCrawler
     #write posts data into mongo database if any post retrieved
     coll = @mongo_db[TABLE_POSTS]
     page_posts.each { |post|
+      post['likes'].delete("paging")
+      post['comments'].delete("paging")
       post_data = {'_id' => post['id'],
                    'page_id' => page_data['_id'],
                    'post_time' => Time.parse(post['created_time']),

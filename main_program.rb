@@ -37,7 +37,7 @@ def main
   time_care = Time.new(2010, 1, 1) # only fetch posts after a specificed day
   until $leave
     myfb.db_obtain_pages(:limit => 10, :update_interval => 60).each { |page| # pick up pages should be updated
-      #puts "Updating #{page['_id']} : #{page['doc']['name']}"
+      puts "Updating #{page['_id']} : #{page['doc']['name']}"
       puts "Checking new posts for #{page['_id']} : #{page['doc']['name']}"
       myfb.db_add_new_posts(page['_id'], page['latest_post_time'])
       next if $leave
@@ -47,7 +47,9 @@ def main
       end
       next if $leave
     }
+=begin
     # update existing posts
+
     1.times { 
       next if $leave
       myfb.db_update_posts(:update_threshold => 60 * 60 * 2, :update_interval => 60 * 5) 
@@ -72,6 +74,7 @@ def main
       next if $leave
       myfb.db_update_posts(:newborn => true)
     }
+=end
   end
 
 end
