@@ -21,6 +21,7 @@ class FbPageCrawler
     # REVIEW: the posts will be lost if page_update fails
     coll = @mongo_db[TABLE_POSTS]
     page_posts.each { |post|
+      post = {"shares" : {"count" : 0}}.merge(post)
       post['likes'].delete("paging")
       post['comments'].delete("paging")
       post_data = {'_id' => post['id'],

@@ -35,10 +35,12 @@ class FbPageCrawler
     #            {'$set' => {'last_updated' => time_update}})
 
     # only post that was created newer than update_threshold will be updated
+    time_1 = Time.now
     find_target = {'post_time' => {'$gt' => update_threshold},
                    'last_updated' => {'$lt' => update_interval}}
     coll = @mongo_db[TABLE_POSTS]
     posts = coll.find(find_target, find_opts).to_a
+    time_2 = Time.now
     #$stderr.puts "db_update_posts: updating #{posts.size} posts" if posts.size > 0
     posts.each { |post|
       $stderr.puts "db_update_post:updating post(#{post['_id']}):post_time=#{post['post_time']}last_updated=#{post['last_updated']}"
@@ -59,9 +61,12 @@ class FbPageCrawler
       # update likes
       #db_update_post_likes(post['_id']) if new_post.has_key?('likes')
       # update the post
-      coll.update({'_id' => post['_id']}, 
-                  {'$set' => {'last_updated' => time_update, 'doc' => new_post}})
+      #coll.update({'_id' => post['_id']}, 
+        #          {'$set' => {'last_updated' => time_update, 'doc' => new_post}})
     }
+    time_3 = Time.now
+    puts time_2 - time_1
+    puts time_3 - time_2
     #$stderr.puts "db_update_posts: #{posts.size} posts are updated" if posts.size > 0
     posts.size
   rescue => ex

@@ -20,6 +20,7 @@ class FbPageCrawler
     # REVIEW: the posts will be lost if page_update fails
     coll = @mongo_db[TABLE_POSTS]
     page_posts.each { |post|
+      #post = {"shares" => {"count" => 0}}.merge(post)
       post['likes'].delete("paging")
       post['comments'].delete("paging")
       post_data = {'_id' => post['id'],
@@ -29,7 +30,7 @@ class FbPageCrawler
                    'last_updated' => Time.at(500), # set a small value so that it will be updated quickly
                    'doc' => post}
       #coll.insert(post_data)
-      db_insert_data(coll, post_data)
+      #db_insert_data(coll, post_data)
       #res = coll.update({'_id' => post['id']}, post_data)
       #coll.insert(post_data) if res.has_key?('updatedExisting') && res['updatedExisting'] == false
       #@@logger.debug "db_add_new_posts: post_id=#{post['id']} response:#{res.inspect}"
