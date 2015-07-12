@@ -49,7 +49,6 @@ require './fb_page_crawler/fb_get_post_comments'
 require './fb_page_crawler/fb_get_post'
 require './fb_page_crawler/fb_get_page'
 require './fb_page_crawler/fb_is_numberid'
-require './fb_page_crawler/fb_get_posts_faster'
 
 require './fb_page_crawler/mongo_set_config'
 require './fb_page_crawler/db_add_page'

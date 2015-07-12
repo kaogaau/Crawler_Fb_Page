@@ -30,6 +30,7 @@ class FbPageCrawler
     query << "&access_token=#{o[:access_token]}"
 
     @@logger.debug "fb_get_posts: page_id=#{page_id} since=#{o[:since].inspect} until=#{o[:until].inspect}"
+    #File.open("./link2.txt", "a+") { |file|  file.puts query}
     data = fb_graph_get(query)
     #puts data
     raise 'No available data retrieved' if data.nil? || data.empty?

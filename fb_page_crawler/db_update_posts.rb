@@ -45,8 +45,9 @@ class FbPageCrawler
     posts.each { |post|
       $stderr.puts "db_update_post:updating post(#{post['_id']}):post_time=#{post['post_time']}last_updated=#{post['last_updated']}"
       new_post = fb_get_post(post['_id'])
-      new_post['likes'].delete("paging")
-      new_post['comments'].delete("paging")
+      #post = {"shares" => {"count" => 0}}.merge(post)
+      #new_post['likes'].delete("paging")
+      #new_post['comments'].delete("paging")
       #puts new_post
       if new_post.empty?
         coll.update({'_id' => post['_id']}, 
@@ -54,8 +55,7 @@ class FbPageCrawler
 				   )
         next
       end
-	  #puts new_post.has_key?('comments')
-	  #puts new_post.has_key?('likes')
+
       # update comments  
       #db_update_post_comments(post['_id']) if new_post.has_key?('comments')
       # update likes
@@ -64,9 +64,7 @@ class FbPageCrawler
       #coll.update({'_id' => post['_id']}, 
         #          {'$set' => {'last_updated' => time_update, 'doc' => new_post}})
     }
-    time_3 = Time.now
-    puts time_2 - time_1
-    puts time_3 - time_2
+
     #$stderr.puts "db_update_posts: #{posts.size} posts are updated" if posts.size > 0
     posts.size
   rescue => ex

@@ -20,6 +20,7 @@ class FbPageCrawler
         @@logger.error "Retrieve a error message: #{data} on querying \"#{query}\""
         if data['error'].has_key?('code')
           error_code = data['error']['code']
+          $stderr.puts "FB error code (#{error_code}) : Please reduce the amount of data you're asking for, then retry your request" if error_code == -3
           $stderr.puts "FB error code (#{error_code}) : \"#{query}\" may be unavialable" if error_code == 100
           $stderr.puts "FB error code (#{error_code}) : sleep 30s" if error_code == 613
           sleep 30 if error_code == 613

@@ -29,8 +29,9 @@ class FbPageCrawler
     #write posts data into mongo database if any post retrieved
     coll = @mongo_db[TABLE_POSTS]
     page_posts.each { |post|
-      post['likes'].delete("paging")
-      post['comments'].delete("paging")
+      #post = {"shares" : {"count" : 0}}.merge(post)
+      #post['likes'].delete("paging")
+      #post['comments'].delete("paging")
       post_data = {'_id' => post['id'],
                    'page_id' => page_data['_id'],
                    'post_time' => Time.parse(post['created_time']),
