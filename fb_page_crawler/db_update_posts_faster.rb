@@ -14,7 +14,7 @@ class FbPageCrawler
     coll = @mongo_db[TABLE_POSTS]
     old_posts = coll.find(find_target, find_opts).to_a
     now_2 = Time.now#test programin time
-    puts "\"#{page_name}\" : 進行粉絲團舊文章抓取...[文章時間#{old_posts.first['doc'].fetch('created_time')}至#{old_posts.last['doc'].fetch('created_time')}][#{old_posts.size}篇][耗時#{now_2 - now_1}秒]"
+   #puts "\"#{page_name}\" : 進行粉絲團舊文章抓取...[文章時間#{old_posts.first['doc'].fetch('created_time')}至#{old_posts.last['doc'].fetch('created_time')}][#{old_posts.size}篇][耗時#{now_2 - now_1}秒]"
 ###################grap new posts########################
     new_posts = Array.new(0)
     since_time = Time.parse(old_posts.first['doc'].fetch('created_time')) - 1
@@ -28,7 +28,7 @@ class FbPageCrawler
       end
     end
     now_3 = Time.now#test programin time
-    puts "\"#{page_name}\" : 進行粉絲團新文章抓取...[文章時間#{new_posts.last.fetch('created_time')}至#{new_posts.first.fetch('created_time')}][#{new_posts.size}篇][耗時#{now_3 - now_2}秒]"
+    #puts "\"#{page_name}\" : 進行粉絲團新文章抓取...[文章時間#{new_posts.last.fetch('created_time')}至#{new_posts.first.fetch('created_time')}][#{new_posts.size}篇][耗時#{now_3 - now_2}秒]"
     #$stderr.puts "db_update_posts: #{posts.size} posts are updated" if posts.size > 0
 #######################process data########################
     arr = Array.new(0)
@@ -41,7 +41,7 @@ class FbPageCrawler
     #end
     change_posts = new_posts - arr
     now_4 = Time.now
-    puts "\"#{page_name}\" : 進行粉絲團需更新文章整理...[#{change_posts.size}篇][耗時#{now_4 - now_3}秒]"
+    #puts "\"#{page_name}\" : 進行粉絲團需更新文章整理...[#{change_posts.size}篇][耗時#{now_4 - now_3}秒]"
     count = 0
     change_posts.each do |post|
             result = coll.update({'_id' => post['id']}, {'$set' => {'last_updated' => now_4,'doc' => post}})
@@ -49,7 +49,8 @@ class FbPageCrawler
             #puts post['id'] if result['n'] == 0
     end
     now_5 = Time.now
-    puts "\"#{page_name}\" : 進行粉絲團資料庫文章更新...[#{count}篇][耗時#{now_5 - now_4}秒]"
+    #puts "\"#{page_name}\" : 進行粉絲團資料庫文章更新...[#{count}篇][耗時#{now_5 - now_4}秒]"
+    puts "\"#{page_name}\" : 完成粉絲團文章更新[#{count}篇][耗時#{now_5 - now_1}秒]"
     return now_5 - now_1
   #rescue => ex
    # @@logger.error ex.message

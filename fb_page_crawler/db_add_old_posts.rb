@@ -2,7 +2,9 @@ class FbPageCrawler
   # Add old posts into databse via page_id
   # page_id should be the number id, not username id
   # oldest_time should be Time object
-  def db_add_old_posts(page_id, oldest_time, opts={})
+  def db_add_old_posts(page_id,page_name, oldest_time, opts={})
+    now_1 = Time.now
+    puts "\"#{page_name}\" : 進行粉絲團舊文章增加..."
     raise 'page_id can not be empty' if page_id.nil? || page_id.empty?
     time_update = Time.now
     # Retrieve new posts from the target page
@@ -41,8 +43,9 @@ class FbPageCrawler
       # update likes
       #db_update_post_likes(post['id'])
     }
-    $stderr.puts "db_add_old_posts: receive #{page_posts.size} records from page #{page_id}" if page_posts.size > 0
-
+    now_2 = Time.now
+    $stderr.puts "\"#{page_name}\" : 完成粉絲團舊文章增加[#{page_posts.size}篇][耗時#{now_2 - now_1}秒]" #if page_posts.size > 0
+    return now_2 - now_1
   rescue => ex
     @@logger.error ex.message
     @@logger.debug ex.backtrace.join("\n")
