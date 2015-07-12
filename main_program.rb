@@ -30,8 +30,8 @@ def main
 #    $leave = true
 #    puts ' ********** Waitting program to terminate ********** '
 #  }
-  time_zero = Time.at(0)
-  time_new_append = Time.at(1001)
+  #time_zero = Time.at(0)
+  #time_new_append = Time.at(1001)
   #time_care = Time.now - 60 * 60 * 24 * 30 # only fetch posts within 30 days
   time_care = Time.new(2010, 1, 1) # only fetch posts after a specificed day
   until $leave
@@ -39,6 +39,12 @@ def main
     total_add_new_posts_time = 0
     total_add_old_posts_time = 0
     need_updated_pages = myfb.db_obtain_pages(:limit => 100 ,:update_interval => 60)
+    if need_updated_pages.size == 0
+      puts "目前沒有需要更新之資料..."
+      until need_updated_pages.size > 0
+          need_updated_pages = myfb.db_obtain_pages(:limit => 100 ,:update_interval => 60)
+      end
+    end
     need_updated_pages.each { |page| # pick up pages should be updated
       #add_new_posts
       page_add_new_posts_time = myfb.db_add_new_posts(page['_id'],page['doc']['name'],page['latest_post_time'])
@@ -55,9 +61,11 @@ def main
       total_update_time += page_update_time if page_update_time.class == Float
       next if $leave
     }
-    puts "完成全部粉絲團新文章增加[耗時#{total_add_new_posts_time}秒]"
-    puts "完成全部粉絲團舊文章增加[耗時#{total_add_old_posts_time}秒]"
-    puts "完成全部粉絲團文章更新[耗時#{total_update_time}秒]"
+    File.open("./timelog.txt", "a") { |output|  
+      output.puts "完成全部粉絲團新文章增加[耗時#{total_add_new_posts_time}秒]"
+      output.puts "完成全部粉絲團舊文章增加[耗時#{total_add_old_posts_time}秒]"
+      output.puts "完成全部粉絲團文章更新[耗時#{total_update_time}秒]"
+    }
     #$leave = true
       #1.times { 
       #next if $leave
