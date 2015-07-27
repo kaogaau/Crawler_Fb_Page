@@ -23,7 +23,7 @@ class FbPageCrawler
       get_new_posts = fb_get_posts(page_id,{:limit => 200,:since=>since_time ,:until=>until_time})
       if !get_new_posts.empty?
       new_posts = new_posts | get_new_posts
-      puts "抓取社團\"#{page_name}\"新文章...[#{since_time}到#{until_time}][#{get_new_posts.size}篇]"
+      puts "抓取粉絲團\"#{page_name}\"新文章...[#{since_time}到#{until_time}][#{get_new_posts.size}篇]"
       #puts "抓取粉絲團<#{page_name}>新文章<文章時間從#{get_new_posts.last.fetch('created_time')}到#{get_new_posts.first.fetch('created_time')}>"
       until_time = Time.parse(get_new_posts.last.fetch('created_time'))
       else

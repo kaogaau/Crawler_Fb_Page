@@ -7,13 +7,14 @@ class FbPageCrawler
     raise 'No available data retrieved' unless page_data.has_key?('id')
     # Check if the page is in database
     coll = @mongo_db[TABLE_PAGES]
-    raise "Page \"#{page_id}\" has been in the database" unless coll.find('_id' => page_data['id']).first.nil?
+    #raise "Page \"#{page_id}\" has been in the database" unless coll.find('_id' => page_data['id']).first.nil?
     # Retrieve some posts from the target page
     page_posts = fb_get_posts(page_id, :until => time_update.to_i, :limit => 3)
     latest_post_time = page_posts.empty? ? time_update : Time.parse(page_posts.first.fetch('created_time'))
     oldest_post_time = page_posts.empty? ? time_update : Time.parse(page_posts.last.fetch('created_time'))
 
-    $stderr.puts "db_add_page: adding page \"#{page_name}\" : \"#{page_id}\" into the database"
+    $stderr.puts "db_add_page: adding page \"#{page_name}\" : \"#{page_id}\" into the database" if coll.find('_id' => page_data['id']).first.nil?
+    $stderr.puts "db_add_page: updateing page \"#{page_name}\" : \"#{page_id}\" into the database" if !coll.find('_id' => page_data['id']).first.nil?
     page_data = {'_id' => page_data['id'],
                  'latest_post_time' => latest_post_time,
                  'oldest_post_time' => oldest_post_time,
@@ -22,6 +23,7 @@ class FbPageCrawler
                  'check_old_posts' => true,
                  'doc' => page_data}
     #write page data into mongo databse
+    if coll.find('_id' => page_data['id']).first.nil?
     coll.insert(page_data)
     #db_insert_data(coll, page_data)
     # REVIEW: some posts may get lost if posts inserting fails
@@ -45,6 +47,9 @@ class FbPageCrawler
       # update likes
       #db_update_post_likes(post['id'])
     }
+    else
+      coll.update({'_id' => page_data['id']}, {'$set'=> {'doc' => page_data}})
+    end
 
   rescue => ex
     @@logger.error ex.message
