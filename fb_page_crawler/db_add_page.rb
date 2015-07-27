@@ -12,9 +12,9 @@ class FbPageCrawler
     page_posts = fb_get_posts(page_id, :until => time_update.to_i, :limit => 3)
     latest_post_time = page_posts.empty? ? time_update : Time.parse(page_posts.first.fetch('created_time'))
     oldest_post_time = page_posts.empty? ? time_update : Time.parse(page_posts.last.fetch('created_time'))
-
-    $stderr.puts "db_add_page: adding page \"#{page_name}\" : \"#{page_id}\" into the database" if coll.find('_id' => page_data['id']).first.nil?
-    $stderr.puts "db_add_page: updateing page \"#{page_name}\" : \"#{page_id}\" into the database" if !coll.find('_id' => page_data['id']).first.nil?
+    
+    if coll.find('_id' => page_data['id']).first.nil?
+    $stderr.puts "db_add_page: adding page \"#{page_name}\" : \"#{page_id}\" into the database" 
     page_data = {'_id' => page_data['id'],
                  'latest_post_time' => latest_post_time,
                  'oldest_post_time' => oldest_post_time,
@@ -23,7 +23,6 @@ class FbPageCrawler
                  'check_old_posts' => true,
                  'doc' => page_data}
     #write page data into mongo databse
-    if coll.find('_id' => page_data['id']).first.nil?
     coll.insert(page_data)
     #db_insert_data(coll, page_data)
     # REVIEW: some posts may get lost if posts inserting fails
@@ -48,6 +47,7 @@ class FbPageCrawler
       #db_update_post_likes(post['id'])
     }
     else
+      $stderr.puts "db_add_page: updateing page \"#{page_name}\" : \"#{page_id}\" into the database"
       coll.update({'_id' => page_data['id']}, {'$set'=> {'doc' => page_data}})
     end
 
