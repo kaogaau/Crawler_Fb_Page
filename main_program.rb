@@ -77,6 +77,9 @@ end
 # Main Process begins
 begin
   time_start = Time.now
+  File.open("./fb_page_status.txt","a+") do |output|
+    output.puts "Start Crawler at #{time_start}"
+  end
   puts "Start: #{time_start}"
   puts "========================================"
   main
@@ -88,4 +91,7 @@ ensure
   puts "========================================"
   puts "End: #{time_end}"
   puts "Time cost: #{time_end - time_start}"
+  File.open("./fb_page_status.txt","a+") do |output|
+    output.puts "Stop Crawler at #{time_end}"
+  end
 end
