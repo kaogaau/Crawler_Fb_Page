@@ -18,10 +18,10 @@ def main
   #myfb.access_token = APP_TOKEN # set access_token if you have a valid one
   myfb.fb_get_token!
   mongo_db = mongo_link('127.0.0.1',27017,'fb_rawdata','admin','12345')
-  coll = mongo_db['page_list']
-  page_list = JSON.parse(coll.find_one().to_json)
-  page_list.delete("_id")
-  page_list.each do |page_id,page_name|
+  coll = mongo_db['page_lists']
+  page_lists = JSON.parse(coll.find_one().to_json)
+  page_lists.delete("_id")
+  page_lists.each do |page_id,page_name|
     page_id = page_id.strip
     #puts "Adding #{page_name} : #{page_id} into page database"
     myfb.db_add_page(page_id,page_name) # Add a page into database
