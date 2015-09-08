@@ -11,6 +11,7 @@ def db_init(myfb, pages)
 end
 
 def main
+  Mongo::Logger.logger.level = ::Logger::FATAL
   myfb = FbPageCrawler.new
   myfb.app_id = APP_ID
   myfb.app_secret = APP_SECRET
