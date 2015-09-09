@@ -12,8 +12,7 @@ class FbPageCrawler
     update_interval = time_update - find_opts[:update_interval]
     find_opts.delete(:update_interval)
     find_target = {'last_updated' => {'$lt' => update_interval}, 'check_new_posts' => true}
-
-    @mongo_db[:pages].find(find_target, find_opts).to_a
-    #coll.find(find_target, find_opts).to_a
+    coll = @mongo_db[TABLE_PAGES]
+    coll.find(find_target, find_opts).to_a
   end
 end

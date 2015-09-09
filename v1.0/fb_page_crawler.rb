@@ -10,7 +10,7 @@ require 'logger'
 class FbPageCrawler
   @@fb_graph_host = "graph.facebook.com"
   @@logger = nil
-  #include Mongo
+  include Mongo
 
   attr_accessor :logger
   attr_accessor :app_id, :app_secret, :access_token, :page_limit, :page_maxlimit
